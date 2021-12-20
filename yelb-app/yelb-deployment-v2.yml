@@ -1,0 +1,82 @@
+# Restreview Frontend UI Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yelb-ui
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: yelb-ui
+        tier: frontend
+    spec:
+      containers:
+      - name: yelb-ui
+        image: mreferre/yelb-ui:0.7
+        ports:
+        - containerPort: 80
+---
+# Restreview Middletier Appserver Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yelb-appserver
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: yelb-appserver
+        tier: middletier
+    spec:
+      containers:
+      - name: yelb-appserver
+        image:  mreferre/yelb-appserver:0.5
+        ports:
+        - containerPort: 4567
+---
+# Redis Cache server Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-server
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis-server
+        tier: cache
+    spec:
+      containers:
+      - name: redis-server
+        image: redis:4.0.2
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: redis-server-data
+          mountPath: /data
+      volumes:
+      - name: redis-server-data
+        persistentVolumeClaim:
+          claimName: redis-server-claim
+---
+# Backend DB Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yelb-db
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: yelb-db
+        tier: backenddb
+    spec:
+      containers:
+      - name: yelb-db
+        image: mreferre/yelb-db:0.5
+        ports:
+        - containerPort: 5432

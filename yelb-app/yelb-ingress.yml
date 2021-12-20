@@ -1,0 +1,22 @@
+# Reference: https://github.com/mreferre/yelb
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: yelb-ui
+  annotations:
+#    kubernetes.io/ingress.class: contour # check this, your ingress.class may be different 
+  labels:
+    app: yelb-ui
+spec:
+  rules:
+  - host: "yelb.app.sample.com"
+    http:
+      paths:
+        - backend:
+            serviceName: "yelb-ui"
+            servicePort: 80
+  tls:
+  - hosts:
+    - yelb.app.sample.com
+    secretName: yelb-tls
