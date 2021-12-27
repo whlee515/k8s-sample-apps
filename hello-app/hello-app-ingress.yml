@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hello-app-ingress
@@ -8,13 +8,19 @@ spec:
     http:
       paths: 
       - path: /v1
+        pathType: Prefix
         backend:
-          serviceName: hello-app-svc-v1
-          servicePort: 80
+          service:
+            name: hello-app-svc-v1
+            port: 
+              number: 80
       - path: /v2
+        pathType: Prefix
         backend:
-          serviceName: hello-app-svc-v2
-          servicePort: 80
+          service:
+            name: hello-app-svc-v2
+            port: 
+              number: 80
   tls:
   - hosts:
     - hello-app.sample.com
