@@ -2,14 +2,13 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: redis-server-claim
-  annotations:
-    volume.beta.kubernetes.io/storage-class: thin-disk
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 2Gi
+  storageClassName: k8s-csi-sc
 
 # ---
 #  kind: StorageClass
@@ -21,4 +20,4 @@ spec:
 #  provisioner: kubernetes.io/vsphere-volume
 #  parameters:
 #      diskformat: thin
-#      datastore: KV1PRD_CONTAINER_L001_N01
+#      datastore: <DATASTORE-NAME>

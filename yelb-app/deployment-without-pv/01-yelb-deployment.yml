@@ -50,8 +50,7 @@ spec:
           mountPath: /data
       volumes:
       - name: redis-server-data
-        persistentVolumeClaim:
-          claimName: redis-server-claim
+        emptyDir: {}
 ---
 # yelb-db deployment
 apiVersion: apps/v1
