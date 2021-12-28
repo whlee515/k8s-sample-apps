@@ -6,11 +6,12 @@ metadata:
   name: yelb-ui
   annotations:
 #    kubernetes.io/ingress.class: contour # check this, your ingress.class may be different 
+    cert-manager.io/issuer: "tls-issuer"
   labels:
     app: yelb-ui
 spec:
   rules:
-  - host: "yelb.app.sample.com"
+  - host: "yelb.app.vslab.xyz"
     http:
       paths:
         - backend:
@@ -18,5 +19,5 @@ spec:
             servicePort: 80
   tls:
   - hosts:
-    - yelb.app.sample.com
+    - yelb.app.vslab.xyz
     secretName: yelb-tls
