@@ -1,0 +1,86 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: yelb-ui-np-allow-all
+spec:
+  podSelector:
+    matchLabels:
+      app: yelb-ui
+  ingress:
+  - {}
+  egress:
+  - {}
+  policyTypes:
+  - Ingress
+  - Egress
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: yelb-appserver-np-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app: yelb-appserver
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: yelb-ui
+  egress:
+  - {}
+  policyTypes:
+  - Ingress
+  - Egress
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: yelb-db-np-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app: yelb-db
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: yelb-appserver
+  egress:
+  - {}
+  policyTypes:
+  - Ingress
+  - Egress
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-server-np-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app: redis-server
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: yelb-appserver
+  egress:
+  - {}
+  policyTypes:
+  - Ingress
+  - Egress
